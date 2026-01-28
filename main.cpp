@@ -2,6 +2,24 @@
 #include <GL/glew.h>
 #include <iostream>
 
+//void process_input(SDL_Window *window){
+	// set draw color
+	//SDL_SetRenderDrawColor(renderer, r, g, b, a);
+
+//}
+
+void do_basic_draw() {
+	GLfloat points[] = {
+		-0.5,  0.5,
+		 0.0,  0.0,
+		 0.5, -0.5
+	};
+	std::cout << "Attemtpting to draw poitns" << std::endl;
+	glBufferData(GL_ARRAY_BUFFER, sizeof(points), points, GL_STATIC_DRAW);
+	glDrawArrays(GL_POINTS, 0, sizeof(points)/sizeof(GLfloat) / 2);
+
+}
+
 int main() {
     std::cout << "Starting program\n";
 
@@ -46,7 +64,7 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Draw stuff here (later 😉)
-
+		do_basic_draw();
         SDL_GL_SwapWindow(window);
     }
 

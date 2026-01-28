@@ -1,10 +1,14 @@
-
 CC      = g++
 CFLAGS  = -Wall -Wextra -O2 `sdl2-config --cflags`
-LDFLAGS = `sdl2-config --libs` -lGL
-OUTPUT = main
+LDFLAGS = `sdl2-config --libs` -lGL -lGLEW
+
+OUTPUT  = main
 SRC     = main.cpp
 
+all: $(OUTPUT)
 
-$(CC) $(SRC) $(CFLAGS) -o $(OUTPUT)  $(LDFLAGS)
+$(OUTPUT): $(SRC)
+	$(CC) $(SRC) $(CFLAGS) -o $(OUTPUT) $(LDFLAGS)
 
+clean:
+	rm -f $(OUTPUT)
