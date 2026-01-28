@@ -14,9 +14,18 @@ void do_basic_draw() {
 		 0.0,  0.0,
 		 0.5, -0.5
 	};
+	GLuint indices[] {
+		0,1,2
+	};
 	std::cout << "Attemtpting to draw poitns" << std::endl;
+	
+	// Bind VBO and EBO => Find out what these are
 	glBufferData(GL_ARRAY_BUFFER, sizeof(points), points, GL_STATIC_DRAW);
-	glDrawArrays(GL_POINTS, 0, sizeof(points)/sizeof(GLfloat) / 2);
+	//glDrawArrays(GL_POINTS, 0, sizeof(points)/sizeof(GLfloat) / 2);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	// Draw
+	glDrawElements(GL_POINTS, 3, GL_UNSIGNED_INT,0);
 
 }
 
