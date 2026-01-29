@@ -1,0 +1,17 @@
+[X] you need to initialise the opengl with glfw for windowing
+[X] you need a view port to tell opengl the size of the window since opengl itself doesnt use the window
+[X] glClearColor() => set the color buffer 
+[X] glClear() => the "call"/command to actually write the color 
+
+
+
+
+
+
+
+
+Big conclusion:
+	OpenGL works on a "define things then do stuff with them basis" like you're building the components of a car before you can put it together then drive it 
+
+
+
