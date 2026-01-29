@@ -14,6 +14,14 @@ struct gl_window {
     }
 
 };
+// GLFWwindow* window,
+void framebuffer_size_callback( int width, int height)
+{
+    
+    glViewport(0, 0, width, height);
+}
+
+
 
 int main() {
 
@@ -39,6 +47,18 @@ int main() {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
+
+    // telling opengl the size of the window (i suppose?)
+    glViewport(0, 0, 800, 600); // lower left => first two, last two => width and height
+
+    // render loop
+    while(!glfwWindowShouldClose(window))
+    {
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+    glfwTerminate();
+
 
     return 0;
 }
