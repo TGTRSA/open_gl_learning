@@ -14,6 +14,15 @@ struct gl_window {
     }
 
 };
+
+//for basic input control
+void processInput(GLFWwindow *window)
+{
+    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS){
+        glfwSetWindowShouldClose(window, true);
+    }
+}
+
 // GLFWwindow* window,
 void framebuffer_size_callback( int width, int height)
 {
