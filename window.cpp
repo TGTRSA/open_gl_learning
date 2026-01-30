@@ -3,6 +3,21 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+const char *vertexShaderSource = "#version 330 core\n"
+"layout (location = 0) in vec3 aPos;\n"
+"void main()\n"
+"{\n"
+" gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+"}\0";
+
+
+const char *fragmentShaderSource = "#version 330 core\n"
+"out vec4 FragColor;\n"
+"void main()\n"
+"{\n"
+"FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+"}\0";
+
 struct gl_window {
     int height;
     int width;
@@ -14,6 +29,20 @@ struct gl_window {
     }
 
 };
+
+void shader_success(unsigned int vertexShader) {
+
+    int success;
+    char infoLog[512];
+    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+    if(!success)
+    {
+    glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+    std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" <<
+    infoLog << std::endl;
+    }
+
+}
 
 //for basic input control
 void processInput(GLFWwindow *window)
@@ -35,7 +64,10 @@ void framebuffer_size_callback( int width, int height)
 int main() {
 
     std::cout << "Starting program"<< std::endl;
-    glfwInit();
+    
+    unsigned int shaderProgram;
+    
+    glfwInit();    
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -59,6 +91,25 @@ int main() {
 
     // telling opengl the size of the window (i suppose?)
     glViewport(0, 0, 800, 600); // lower left => first two, last two => width and height
+
+    // vertex shader
+    unsigned int vertexShader;
+    vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+    shader_success(vertexShader);
+
+    // fragment shader
+    unsigned int fragmentShader;
+    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+
+    // shader program
+    shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
 
     // render loop
     while(!glfwWindowShouldClose(window))

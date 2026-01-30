@@ -1,9 +1,35 @@
-[X] you need to initialise the opengl with glfw for windowing
-[X] you need a view port to tell opengl the size of the window since opengl itself doesnt use the window
-[X] glClearColor() => set the color buffer 
-[X] glClear() => the "call"/command to actually write the color 
+Intro to opengl:
+	[X] you need to initialise the opengl with glfw for windowing
+	[X] you need a view port to tell opengl the size of the window since opengl itself doesnt use the window
+	[X] glClearColor() => set the color buffer 
+	[X] glClear() => the "call"/command to actually write the color 
+	[X] opengl needs to be told in what manner data will be rendered (connected lines, triangles, points separated) and these are called primitives => this instruction process is referred to as a "pipeline"
 
+Pipeline outline:
+	Vertex data (embedding)
+	assembly: forms the geometry (lines, triangles etc) (generating)
+	geometry shader stage: that which manipulates or replicates existing primitives defined by us (manipulation)
+	rasterization stage: rasterization is the process whereby the decision of where pixels will be placed on the screen (translational)
 
+	
+On vertext Input:
+	unsigned int VBO buffer object
+	VBO is vertex buffer object and has the buffer type GL_ARRAY_BUFFER so we get:
+	glGenBuffers(n, &VBO) where n is the number of buffers meant to be generted and
+	glBindBuffer(GL_ARRAY_BUFFER, VBO)	binds a specific buffer object to the VBO 
+
+	after which we use buffer calls to "write" to the bound buffer object so to say
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW) the call to copy the vertex buffer data into memory (on the gpu i suppose)
+	glBufferData(buffer type, int how much data, the data itself, management of data)
+
+	data management:
+		GL_STREAM_DRAW: data is set once and used a few times
+		GL_STATIC_DRAW: data is set once and used many times
+		GL_DYNAMIC_DRAW: data is changed alot and used many times
+
+	Vertex shader:
+		Modern OpenGL requires that we at least set up a vertex and fragment shader if we want to do some rendering
+		this is written in GLSL	
 
 
 
