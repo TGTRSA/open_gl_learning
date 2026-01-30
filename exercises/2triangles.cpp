@@ -88,11 +88,11 @@ struct Mesh {
     }
 
     void setupArray(float vertices[], int vSize) {
-        this->vertexCount = vSize/sizeof(unsigned int);
+        this->vertexCount = vSize/(3*sizeof(float));
         this->usesIndices =false;
+        int threex_float = 3*(sizeof(float));
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
-        glGenBuffers(1, &EBO);
 
         //  Setup VBO (The actual vertex positions)
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -111,6 +111,13 @@ struct Mesh {
             glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
         }else{
             glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+        }
+    }
+    ~Mesh() {
+        glDeleteVertexArrays(1, &VAO);
+        glDeleteBuffers(1, &VBO);
+        if (usesIndices) {
+            glDeleteBuffers(1, &EBO);
         }
     }
 
@@ -231,7 +238,9 @@ int main() {
     );
     glEnableVertexAttribArray(0);
    
-    
+    Mesh triangle_ob;
+    int vSize = sizeof(triangle); 
+    triangle_ob.setupArray(triangle, vSize);
 
 
     // render loop
@@ -246,8 +255,8 @@ int main() {
         // rendering here
         // ..:: Drawing code (in render loop) :: ..
         glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        triangle_ob.draw();
+        //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
      
 
         glfwSwapBuffers(window);
