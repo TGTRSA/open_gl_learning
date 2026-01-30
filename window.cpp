@@ -64,7 +64,11 @@ void framebuffer_size_callback( int width, int height)
 int main() {
 
     std::cout << "Starting program"<< std::endl;
-    
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f, // left  
+        0.5f, -0.5f, 0.0f, // right 
+        0.0f,  0.5f, 0.0f  // top   
+    }  ;
     unsigned int shaderProgram;
     
     glfwInit();    
@@ -110,6 +114,26 @@ int main() {
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
     glLinkProgram(shaderProgram);
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    glVertexAttribPointer(
+        0, 3, GL_FLOAT, GL_FALSE,
+        3 * sizeof(float),(void*)0
+    );
+    glEnableVertexAttribArray(0);
+   
+    unsigned int VAO, VBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
 
     // render loop
     while(!glfwWindowShouldClose(window))
@@ -121,6 +145,14 @@ int main() {
         processInput(window);
 
         // rendering here
+        // 1. Use the shader program
+        glUseProgram(shaderProgram);
+
+        // 2. Bind the VAO (restores all the VBO/Attribute settings from above)
+        glBindVertexArray(VAO);
+
+        // 3. Draw! (This is the "someOpenGLFunction" you were looking for)
+        glDrawArrays(GL_TRIANGLES, 0, 3); 
 
         glfwSwapBuffers(window);
         glfwPollEvents();

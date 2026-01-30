@@ -29,7 +29,7 @@ On vertext Input:
 
 	Vertex shader:
 		Modern OpenGL requires that we at least set up a vertex and fragment shader if we want to do some rendering
-		this is written in GLSL	
+		this is written in GLSL		
 
 
 
