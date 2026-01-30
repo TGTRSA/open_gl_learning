@@ -21,23 +21,23 @@ const char *fragmentShaderSource = "#version 330 core\n"
 struct shaderProgram {
     unsigned int shaderProgram, vertexShader, fragmentShader;
 
-    unsigned int init_vertexshader() {
+    unsigned int init_vertexshader(const char* vertexShaderSource) {
         vertexShader = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
         glCompileShader(vertexShader);
         return vertexShader;
     }
 
-    unsigned int init_fragmentshader() {
+    unsigned int init_fragmentshader(const char* fragmentShaderSource) {
         fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
         glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
         glCompileShader(fragmentShader);
         return fragmentShader;
     }
 
-    void create() {
-        vertexShader = init_vertexshader();
-        fragmentShader = init_fragmentshader();
+    void create(const char* vertexShaderSource, const char* fragmentShaderSource) {
+        vertexShader = init_vertexshader(vertexShaderSource);
+        fragmentShader = init_fragmentshader(fragmentShaderSource);
 
         shaderProgram = glCreateProgram();
         glAttachShader(shaderProgram, vertexShader);
@@ -48,21 +48,43 @@ struct shaderProgram {
 
     }
 
+    void use() {
+        glUseProgram(shaderProgram);
+    }
+
 };
 
-struct triangle{
+struct Mesh {
     unsigned int VAO, VBO, EBO;
-    unsigned int shaderProgram;
+    int vCount;
+    int iCount;
+    bool usesIndices;
 
-    void setup(float vertices,struct shaderProgram shaderprogram) {
+    void setupElement(float vertices[], float indices[]) {
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
         glGenBuffers(1, &EBO);
 
-    
+        // 3. Setup VBO (The actual vertex positions)
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+        // 4. Setup EBO (The order in which to draw them)
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+        // 5. Tell OpenGL how to link the VBO data to shader attributes
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+
+        // 6. Unbind the VAO so you don't accidentally modify it
+        glBindVertexArray(0); 
 
     }
 
+    void setupArray(float vertices[],struct shaderProgram shaderprogram) {
+        
+    }   
 
 };
 
