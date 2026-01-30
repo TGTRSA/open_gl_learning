@@ -186,9 +186,14 @@ int main() {
         1, 2, 3 // second triangle
     };
     float triangle[] = {
-        -0.5f, -0.8f, 0.0f, // left  
+        -0.5f, -0.5f, 0.0f, // left  
         0.5f, -0.5f, 0.0f, // right 
         0.0f,  0.5f, 0.0f  // top   
+    };
+    float triangle2_vertices[] = {
+        -0.0f, -0.0f, 0.5f, // left  
+        1.0f, -0.0f, 0.5f, // right 
+        0.5f,  1.0f, 0.5f  // top   
     };
     unsigned int shaderProgram;
     
@@ -245,8 +250,13 @@ int main() {
     glEnableVertexAttribArray(0);
    
     Mesh triangle_ob;
+    Mesh triangle2;
+    
+    int tsize2 = sizeof(triangle2_vertices);
     int vSize = sizeof(triangle); 
+    
     triangle_ob.setupArray(triangle, vSize);
+    triangle2.setupArray(triangle2_vertices,tsize2);
 
 
     // render loop
@@ -262,6 +272,7 @@ int main() {
         // ..:: Drawing code (in render loop) :: ..
         glUseProgram(shaderProgram);
         triangle_ob.draw();
+        triangle2.draw();
         //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
      
 
