@@ -93,6 +93,9 @@ struct Mesh {
         int threex_float = 3*(sizeof(float));
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
+        
+        glBindVertexArray(VAO);
+
 
         //  Setup VBO (The actual vertex positions)
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -107,9 +110,12 @@ struct Mesh {
     }   
 
     void draw(){
+        glBindVertexArray(VAO);
         if(usesIndices){
+            
             glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
         }else{
+            
             glDrawArrays(GL_TRIANGLES, 0, vertexCount);
         }
     }
