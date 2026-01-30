@@ -38,6 +38,6 @@ On vertext Input:
 
 Big conclusion:
 	OpenGL works on a "define things then do stuff with them basis" like you're building the components of a car before you can put it together then drive it 
-
+	OpenGL will actually end up requiring us forming shapes from struct obejcts and then writing a function to draw them which is just beautiful
 
 
