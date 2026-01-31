@@ -225,33 +225,6 @@ int main() {
     shaderProgram shader;
     
     shader.create(vertexShaderSource, fragmentShaderSource);
-    
-    // vertex shader
-    unsigned int vertexShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-    shader_success(vertexShader);
-
-    // fragment shader
-    unsigned int fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-
-    // shader program
-    shaderP = glCreateProgram();
-    glAttachShader(shaderP, vertexShader);
-    glAttachShader(shaderP, fragmentShader);
-    glLinkProgram(shaderP);
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    glVertexAttribPointer(
-        0, 3, GL_FLOAT, GL_FALSE,
-        3 * sizeof(float),(void*)0
-    );
-    glEnableVertexAttribArray(0);
    
     Mesh triangle_ob;
     Mesh triangle2;
