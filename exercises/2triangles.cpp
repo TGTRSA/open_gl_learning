@@ -191,11 +191,11 @@ int main() {
         0.0f,  0.5f, 0.0f  // top   
     };
     float triangle2_vertices[] = {
-        -0.0f, -0.0f, 0.5f, // left  
-        1.0f, -0.0f, 0.5f, // right 
-        0.5f,  1.0f, 0.5f  // top   
+        0.5f, -0.5f, 0.0f,      // Now Bottom-right
+        -0.5f, -0.5f, 0.0f,      // Now Bottom-left
+        0.0f,  0.5f, 0.0f       // Top remains same  
     };
-    unsigned int shaderProgram;
+    unsigned int shaderP;
     
     glfwInit();    
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -222,6 +222,10 @@ int main() {
     // telling opengl the size of the window (i suppose?)
     glViewport(0, 0, 800, 600); // lower left => first two, last two => width and height
 
+    shaderProgram shader;
+    
+    shader.create(vertexShaderSource, fragmentShaderSource);
+    
     // vertex shader
     unsigned int vertexShader;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -236,10 +240,10 @@ int main() {
     glCompileShader(fragmentShader);
 
     // shader program
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
+    shaderP = glCreateProgram();
+    glAttachShader(shaderP, vertexShader);
+    glAttachShader(shaderP, fragmentShader);
+    glLinkProgram(shaderP);
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 
@@ -270,7 +274,8 @@ int main() {
 
         // rendering here
         // ..:: Drawing code (in render loop) :: ..
-        glUseProgram(shaderProgram);
+        //glUseProgram(shaderP);
+        shader.use();
         triangle_ob.draw();
         triangle2.draw();
         //glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
